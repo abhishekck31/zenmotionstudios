@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { WorkGrid } from "@/components/WorkGrid";
+import { Marquee } from "@/components/Marquee";
 
 export default function Home() {
   return (
@@ -50,6 +51,7 @@ export default function Home() {
           </div>
         </section>
         
+        <Marquee />
         <WorkGrid />
       </main>
     </div>
