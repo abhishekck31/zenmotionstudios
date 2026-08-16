@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { WorkGrid } from "@/components/WorkGrid";
@@ -9,8 +9,10 @@ import { Services } from "@/components/Services";
 import { About } from "@/components/About";
 import { Testimonials } from "@/components/Testimonials";
 import { Contact } from "@/components/Contact";
+import { ShowreelModal } from "@/components/ShowreelModal";
 
 export default function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -49,7 +51,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 2.2, ease: [0.16, 1, 0.3, 1] }}
               className="mx-auto max-w-5xl"
             >
-              <h1 className="text-5xl font-extrabold tracking-tight sm:text-7xl md:text-8xl lg:text-9xl">
+              <h1 className="text-5xl font-extrabold tracking-tight sm:text-7xl md:text-8xl lg:text-9xl font-heading">
                 <span className="block text-white drop-shadow-xl">CRAFTING</span>
                 <span className="block text-accent drop-shadow-xl">MOTION.</span>
               </h1>
@@ -72,7 +74,10 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 2.6, ease: [0.16, 1, 0.3, 1] }}
               className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
             >
-              <button className="group relative flex h-14 items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-8 font-semibold text-black transition-transform hover:scale-105 active:scale-95 shadow-2xl">
+              <button 
+                onClick={() => setIsModalOpen(true)}
+                className="group relative flex h-14 items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-8 font-semibold text-black transition-transform hover:scale-105 active:scale-95 shadow-2xl"
+              >
                 <span>View Showreel</span>
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </button>
@@ -87,6 +92,8 @@ export default function Home() {
         <Services />
         <Contact />
       </main>
+      
+      <ShowreelModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }
