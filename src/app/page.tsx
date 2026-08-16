@@ -7,6 +7,7 @@ import { WorkGrid } from "@/components/WorkGrid";
 import { Marquee } from "@/components/Marquee";
 import { Services } from "@/components/Services";
 import { About } from "@/components/About";
+import { Testimonials } from "@/components/Testimonials";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -81,6 +82,7 @@ export default function Home() {
         <Marquee />
         <About />
         <WorkGrid />
+        <Testimonials />
         <Services />
       </main>
     </div>
