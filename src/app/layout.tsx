@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Syne } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { CustomCursor } from "@/components/CustomCursor";
 import { Footer } from "@/components/Footer";
 import { Preloader } from "@/components/Preloader";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const syne = Syne({
+  variable: "--font-heading",
   subsets: ["latin"],
 });
 
@@ -29,9 +29,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${syne.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col cursor-none">
+      <body className="min-h-full flex flex-col cursor-none font-sans bg-background text-foreground">
         <Preloader />
         <CustomCursor />
         <Navbar />
