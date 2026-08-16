@@ -46,6 +46,7 @@ export function WorkGrid() {
 
   return (
     <section 
+      id="work"
       ref={containerRef} 
       className="relative h-[400vh] bg-black"
     >

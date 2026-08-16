@@ -30,6 +30,7 @@ export function Contact() {
 
   return (
     <section 
+      id="contact"
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}

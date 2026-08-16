@@ -11,13 +11,13 @@ export function Navbar() {
 
   const menuVars = {
     initial: { scaleY: 0 },
-    animate: { scaleY: 1, transition: { duration: 0.5, ease: [0.12, 0, 0.39, 0] } },
-    exit: { scaleY: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.5 } }
+    animate: { scaleY: 1, transition: { duration: 0.5, ease: [0.12, 0, 0.39, 0] as any } },
+    exit: { scaleY: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as any, delay: 0.5 } }
   };
 
   const linkVars = {
-    initial: { y: "30vh", transition: { duration: 0.5, ease: [0.37, 0, 0.63, 1] } },
-    open: { y: 0, transition: { duration: 0.7, ease: [0, 0.55, 0.45, 1] } }
+    initial: { y: "30vh", transition: { duration: 0.5, ease: [0.37, 0, 0.63, 1] as any } },
+    open: { y: 0, transition: { duration: 0.7, ease: [0, 0.55, 0.45, 1] as any } }
   };
 
   const navLinks = [
