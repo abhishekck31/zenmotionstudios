@@ -1,99 +1,105 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import { MagneticButton } from "./MagneticButton";
-
-const navLinks = [
-  { name: "Work", href: "/work" },
-  { name: "Services", href: "/services" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
-];
+import { Menu, X } from "lucide-react";
 
 export function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+  const menuVars = {
+    initial: { scaleY: 0 },
+    animate: { scaleY: 1, transition: { duration: 0.5, ease: [0.12, 0, 0.39, 0] } },
+    exit: { scaleY: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.5 } }
+  };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const linkVars = {
+    initial: { y: "30vh", transition: { duration: 0.5, ease: [0.37, 0, 0.63, 1] } },
+    open: { y: 0, transition: { duration: 0.7, ease: [0, 0.55, 0.45, 1] } }
+  };
+
+  const navLinks = [
+    { title: "HOME", href: "/" },
+    { title: "WORK", href: "/#work" },
+    { title: "STUDIO", href: "/#about" },
+    { title: "CONTACT", href: "/#contact" }
+  ];
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
-        isScrolled ? "bg-black/50 backdrop-blur-md py-4" : "bg-transparent py-6"
-      }`}
-    >
-      <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8">
-        <MagneticButton>
-          <a href="/" className="text-xl font-bold tracking-tighter text-white">
-            ZENMOTION
-          </a>
-        </MagneticButton>
-
-        {/* Desktop Nav */}
-        <nav className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <MagneticButton key={link.name}>
-              <a
-                href={link.href}
-                className="text-sm font-semibold uppercase tracking-widest text-white/80 transition-colors hover:text-accent"
-              >
-                {link.name}
-              </a>
+    <>
+      <motion.nav 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, delay: 2, ease: "easeOut" }}
+        className="fixed top-0 z-[9999] w-full px-6 py-6 mix-blend-difference"
+      >
+        <div className="flex items-center justify-between">
+          <Link href="/" className="group flex items-center gap-2">
+            <span className="text-xl font-bold tracking-tighter text-white font-heading">ZEN<span className="text-accent">MOTION</span></span>
+          </Link>
+          
+          <div className="hidden md:flex gap-8">
+            <MagneticButton>
+              <Link href="/#work" className="text-xs font-bold uppercase tracking-widest text-white hover:text-accent transition-colors">
+                Work
+              </Link>
             </MagneticButton>
-          ))}
-          <MagneticButton>
-            <button className="rounded-full bg-white px-6 py-2.5 text-sm font-bold text-black transition-transform hover:scale-105">
-              START A PROJECT
-            </button>
-          </MagneticButton>
-        </nav>
+            <MagneticButton>
+              <Link href="/#about" className="text-xs font-bold uppercase tracking-widest text-white hover:text-accent transition-colors">
+                Studio
+              </Link>
+            </MagneticButton>
+            <MagneticButton>
+              <Link href="/#contact" className="text-xs font-bold uppercase tracking-widest text-white hover:text-accent transition-colors">
+                Contact
+              </Link>
+            </MagneticButton>
+          </div>
 
-        {/* Mobile Menu Toggle */}
-        <button
-          className="text-white md:hidden"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Nav */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.nav
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute left-0 right-0 top-full flex flex-col bg-black/95 px-4 py-8 backdrop-blur-xl md:hidden"
+          <button 
+            className="md:hidden relative z-[10000] text-white p-2"
+            onClick={() => setIsOpen(!isOpen)}
           >
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="border-b border-white/10 py-4 text-2xl font-bold uppercase tracking-tight text-white transition-colors hover:text-accent"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.name}
-              </a>
-            ))}
-            <button className="mt-8 rounded-full bg-white px-8 py-4 text-sm font-bold text-black">
-              START A PROJECT
-            </button>
-          </motion.nav>
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </motion.nav>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            variants={menuVars}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="fixed inset-0 z-[9998] bg-accent origin-top flex flex-col justify-center px-8"
+          >
+            <div className="flex flex-col gap-4">
+              {navLinks.map((link, index) => (
+                <div key={index} className="overflow-hidden">
+                  <motion.div
+                    variants={linkVars}
+                    initial="initial"
+                    animate="open"
+                    exit="initial"
+                    className="pt-2"
+                  >
+                    <Link 
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className="text-6xl sm:text-8xl font-black uppercase tracking-tighter text-black font-heading hover:text-white transition-colors"
+                    >
+                      {link.title}
+                    </Link>
+                  </motion.div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </>
   );
 }
