@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { WorkGrid } from "@/components/WorkGrid";
 import { Marquee } from "@/components/Marquee";
 import { Services } from "@/components/Services";
+import { About } from "@/components/About";
 
 export default function Home() {
   return (
@@ -53,6 +54,7 @@ export default function Home() {
         </section>
         
         <Marquee />
+        <About />
         <WorkGrid />
         <Services />
       </main>
