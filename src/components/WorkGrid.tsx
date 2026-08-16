@@ -77,7 +77,10 @@ export function WorkGrid() {
               onMouseEnter={() => setHoveredId(project.id)}
               onMouseLeave={() => setHoveredId(null)}
             >
-              <div className="relative aspect-[4/5] w-full overflow-hidden bg-zinc-900 rounded-xl">
+              <div 
+                className="relative aspect-[4/5] w-full overflow-hidden bg-zinc-900 rounded-xl"
+                data-cursor="PLAY"
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={project.image}
@@ -98,12 +101,6 @@ export function WorkGrid() {
                 />
                 
                 <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:scale-100 scale-90">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-2xl">
-                    <span className="text-xs font-bold tracking-widest uppercase">Play</span>
-                  </div>
-                </div>
               </div>
 
               <div>
