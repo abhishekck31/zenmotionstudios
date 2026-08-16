@@ -1,120 +1,132 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import Link from "next/link";
 
 const projects = [
   {
-    id: 1,
     title: "NEON DREAMS",
+    slug: "neon-dreams",
+    client: "Cyber Corp",
     category: "Commercial / VFX",
-    video: "https://player.vimeo.com/external/494254884.sd.mp4?s=d00e57200ef9019623e19875bb2f07d2f92461be&profile_id=164&oauth2_token_id=57447761",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop",
+    video: "https://cdn.coverr.co/videos/coverr-cyberpunk-city-at-night-5244/1080p.mp4",
   },
   {
-    id: 2,
-    title: "ECHOES",
-    category: "Short Film / Color",
-    video: "https://player.vimeo.com/external/517090022.sd.mp4?s=d00e57200ef9019623e19875bb2f07d2f92461be&profile_id=164&oauth2_token_id=57447761",
-    image: "https://images.unsplash.com/photo-1518116348398-0c65538e14cb?q=80&w=2670&auto=format&fit=crop",
+    title: "ECHOES OF SILENCE",
+    slug: "echoes-of-silence",
+    client: "Soundscape",
+    category: "Music Video",
+    video: "https://cdn.coverr.co/videos/coverr-dj-playing-music-at-a-party-5240/1080p.mp4",
   },
   {
-    id: 3,
-    title: "VELOCITY",
-    category: "Automotive / Edit",
-    video: "https://player.vimeo.com/external/434045526.sd.mp4?s=c27eecc69a27dbc4ff2b87d38afc35f1a9e7c02d&profile_id=164&oauth2_token_id=57447761",
-    image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2814&auto=format&fit=crop",
+    title: "THE ASCENT",
+    slug: "neon-dreams", // reusing slug for demo
+    client: "Alpine Gear",
+    category: "Documentary",
+    video: "https://cdn.coverr.co/videos/coverr-snowy-mountain-peaks-in-the-clouds-5226/1080p.mp4",
   },
   {
-    id: 4,
-    title: "SYNTHESIS",
-    category: "Music Video / 3D",
-    video: "https://player.vimeo.com/external/530206122.sd.mp4?s=a7f23c0356e63df8a011d8d85f5223a8b4ec8b9f&profile_id=164&oauth2_token_id=57447761",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+    title: "LIQUID GOLD",
+    slug: "echoes-of-silence", // reusing slug for demo
+    client: "Aura Fragrances",
+    category: "Product / Motion",
+    video: "https://cdn.coverr.co/videos/coverr-pouring-honey-5214/1080p.mp4",
   },
 ];
 
 export function WorkGrid() {
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+  });
+
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
 
   return (
-    <section className="bg-black px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
-          <motion.h2 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl font-bold tracking-tight text-white sm:text-5xl"
-          >
-            SELECTED WORK
-          </motion.h2>
-          <motion.a 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            href="/work" 
-            className="group relative inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-white/70 transition-colors hover:text-white"
-          >
-            View All Projects
-            <span className="absolute -bottom-1 left-0 h-[1px] w-0 bg-white transition-all duration-300 group-hover:w-full" />
-          </motion.a>
+    <section 
+      ref={containerRef} 
+      className="relative h-[400vh] bg-black"
+    >
+      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8">
+          <div className="flex items-end justify-between">
+            <h2 className="text-5xl font-black tracking-tighter text-white sm:text-7xl lg:text-8xl font-heading">
+              FEATURED <br />
+              <span className="text-accent">WORK.</span>
+            </h2>
+            <p className="hidden md:block max-w-sm text-right text-lg text-white/50 font-medium">
+              A curated selection of our finest visual narratives and motion design projects.
+            </p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
+        <motion.div style={{ x }} className="flex h-[60vh] w-[400vw] sm:w-[300vw] lg:w-[200vw] xl:w-[400vw] pl-4 sm:pl-8 lg:pl-12">
           {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className={`group relative flex cursor-pointer flex-col gap-4 ${
-                index % 2 !== 0 ? "md:mt-24" : ""
-              }`}
-              onMouseEnter={() => setHoveredId(project.id)}
-              onMouseLeave={() => setHoveredId(null)}
+            <div 
+              key={index} 
+              className="relative h-full w-[85vw] sm:w-[70vw] lg:w-[50vw] xl:w-[90vw] shrink-0 pr-4 sm:pr-8"
+              data-cursor="EXPLORE"
             >
-              <div 
-                className="relative aspect-[4/5] w-full overflow-hidden bg-zinc-900 rounded-xl"
-                data-cursor="PLAY"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className={`absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 ${
-                    hoveredId === project.id ? "opacity-0" : "opacity-100"
-                  }`}
-                />
-                <video
-                  src={project.video}
-                  muted
-                  loop
-                  playsInline
-                  autoPlay={hoveredId === project.id}
-                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                    hoveredId === project.id ? "opacity-100" : "opacity-0"
-                  }`}
-                />
-                
-                <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-              </div>
-
-              <div>
-                <h3 className="text-2xl font-bold uppercase tracking-tight text-white transition-colors group-hover:text-accent">
-                  {project.title}
-                </h3>
-                <p className="mt-1 text-sm font-medium uppercase tracking-widest text-white/50">
-                  {project.category}
-                </p>
-              </div>
-            </motion.div>
+              <Link href={`/work/${project.slug}`} className="block h-full w-full">
+                <ProjectCard project={project} index={index} />
+              </Link>
+            </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
+  );
+}
+
+function ProjectCard({ project, index }: { project: any; index: number }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  return (
+    <div 
+      className="group relative h-full w-full overflow-hidden rounded-2xl bg-white/5"
+      onMouseEnter={() => {
+        setIsHovered(true);
+        videoRef.current?.play();
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        videoRef.current?.pause();
+      }}
+    >
+      <video
+        ref={videoRef}
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+      >
+        <source src={project.video} type="video/mp4" />
+      </video>
+      
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
+      
+      <div className="absolute bottom-0 left-0 w-full p-8 sm:p-12 transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
+        <div className="flex items-center gap-4 mb-4 overflow-hidden">
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: isHovered ? 0 : 20, opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex items-center gap-2"
+          >
+            <span className="text-xs font-bold uppercase tracking-widest text-accent">{project.category}</span>
+            <span className="text-white/30">•</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-white/50">{project.client}</span>
+          </motion.div>
+        </div>
+        
+        <h3 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-white uppercase font-heading drop-shadow-lg">
+          {project.title}
+        </h3>
+      </div>
+    </div>
   );
 }
