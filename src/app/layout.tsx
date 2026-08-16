@@ -16,11 +16,50 @@ const inter = Inter({
 const syne = Syne({
   variable: "--font-heading",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
-  title: "ZENMOTION | Creative Video Agency",
-  description: "Award-winning video editing, motion design, and visual storytelling studio.",
+  title: {
+    default: "ZENMOTION | Cinematic Video Editing & Motion Design",
+    template: "%s | ZENMOTION"
+  },
+  description: "An award-winning creative agency specializing in high-end video editing, motion design, color grading, and visual effects for forward-thinking brands.",
+  keywords: ["video editing", "motion design", "VFX", "creative agency", "color grading", "post-production", "commercials"],
+  authors: [{ name: "Zenmotion Studios" }],
+  creator: "Zenmotion Studios",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://zenmotion.studio",
+    title: "ZENMOTION | Cinematic Video Editing & Motion Design",
+    description: "An award-winning creative agency specializing in high-end video editing, motion design, color grading, and visual effects for forward-thinking brands.",
+    siteName: "ZENMOTION",
+    images: [{
+      url: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=2670&auto=format&fit=crop",
+      width: 1200,
+      height: 630,
+      alt: "Zenmotion Studios Preview"
+    }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ZENMOTION | Cinematic Video Editing & Motion Design",
+    description: "An award-winning creative agency specializing in high-end video editing, motion design, color grading, and visual effects.",
+    creator: "@zenmotion",
+    images: ["https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=2670&auto=format&fit=crop"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
