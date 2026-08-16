@@ -1,73 +1,99 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import { MagneticButton } from "./MagneticButton";
 
 const navLinks = [
   { name: "Work", href: "/work" },
-  { name: "Studio", href: "/studio" },
   { name: "Services", href: "/services" },
+  { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
-  const { scrollY } = useScroll();
-  const [hidden, setHidden] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-    
-    if (latest > 50) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-    
-    if (latest > 150 && latest > previous) {
-      setHidden(true);
-    } else {
-      setHidden(false);
-    }
-  });
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <motion.header
-      variants={{
-        visible: { y: 0 },
-        hidden: { y: "-100%" },
-      }}
-      animate={hidden ? "hidden" : "visible"}
-      transition={{ duration: 0.35, ease: "easeInOut" }}
-      className={`fixed top-0 z-50 flex w-full justify-center px-4 pt-6 pb-2 transition-all duration-300 ${
-        scrolled ? "pt-4" : ""
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
+        isScrolled ? "bg-black/50 backdrop-blur-md py-4" : "bg-transparent py-6"
       }`}
     >
-      <nav
-        className={`flex w-full max-w-5xl items-center justify-between rounded-full border border-white/10 px-6 py-3 backdrop-blur-md transition-colors duration-300 ${
-          scrolled ? "bg-black/50" : "bg-transparent"
-        }`}
-      >
-        <Link href="/" className="text-xl font-bold tracking-tighter">
-          ZEN<span className="text-accent">MOTION</span>
-        </Link>
-        <ul className="hidden md:flex items-center gap-8">
+      <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8">
+        <MagneticButton>
+          <a href="/" className="text-xl font-bold tracking-tighter text-white">
+            ZENMOTION
+          </a>
+        </MagneticButton>
+
+        {/* Desktop Nav */}
+        <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
-            <li key={link.name}>
-              <Link 
+            <MagneticButton key={link.name}>
+              <a
                 href={link.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-white"
+                className="text-sm font-semibold uppercase tracking-widest text-white/80 transition-colors hover:text-accent"
               >
                 {link.name}
-              </Link>
-            </li>
+              </a>
+            </MagneticButton>
           ))}
-        </ul>
-        <button className="rounded-full bg-white px-4 py-2 text-sm font-medium text-black transition-transform hover:scale-105 active:scale-95 md:hidden">
-          Menu
+          <MagneticButton>
+            <button className="rounded-full bg-white px-6 py-2.5 text-sm font-bold text-black transition-transform hover:scale-105">
+              START A PROJECT
+            </button>
+          </MagneticButton>
+        </nav>
+
+        {/* Mobile Menu Toggle */}
+        <button
+          className="text-white md:hidden"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-      </nav>
+      </div>
+
+      {/* Mobile Nav */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.nav
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute left-0 right-0 top-full flex flex-col bg-black/95 px-4 py-8 backdrop-blur-xl md:hidden"
+          >
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="border-b border-white/10 py-4 text-2xl font-bold uppercase tracking-tight text-white transition-colors hover:text-accent"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.name}
+              </a>
+            ))}
+            <button className="mt-8 rounded-full bg-white px-8 py-4 text-sm font-bold text-black">
+              START A PROJECT
+            </button>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

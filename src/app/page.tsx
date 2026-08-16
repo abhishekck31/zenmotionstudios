@@ -11,6 +11,7 @@ import { Stats } from "@/components/Stats";
 import { Testimonials } from "@/components/Testimonials";
 import { Contact } from "@/components/Contact";
 import { ShowreelModal } from "@/components/ShowreelModal";
+import { MagneticButton } from "@/components/MagneticButton";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,13 +76,13 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 2.6, ease: [0.16, 1, 0.3, 1] }}
               className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
             >
-              <button 
+              <MagneticButton 
                 onClick={() => setIsModalOpen(true)}
                 className="group relative flex h-14 items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-8 font-semibold text-black transition-transform hover:scale-105 active:scale-95 shadow-2xl"
               >
                 <span>View Showreel</span>
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </button>
+              </MagneticButton>
             </motion.div>
           </div>
         </section>

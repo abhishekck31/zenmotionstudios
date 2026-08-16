@@ -4,57 +4,89 @@ import { motion } from "framer-motion";
 
 export function Footer() {
   return (
-    <footer className="relative mt-auto overflow-hidden bg-black text-white pt-24 pb-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
-          <div className="col-span-1 lg:col-span-2">
-            <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tighter mb-6">
-              LET&apos;S CREATE <br />
-              <span className="text-accent">SOMETHING BIG.</span>
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-sm mb-8">
-              We are always looking for new challenges and visionary partners.
-            </p>
-            <a href="mailto:hello@zenmotion.studio" className="inline-block border-b-2 border-accent pb-1 text-xl font-medium hover:text-accent transition-colors">
-              hello@zenmotion.studio
-            </a>
-          </div>
-          
-          <div>
-            <h3 className="font-semibold text-lg mb-6 tracking-wider uppercase text-white/50">Social</h3>
-            <ul className="space-y-4">
-              <li><a href="#" className="hover:text-accent transition-colors">Instagram</a></li>
-              <li><a href="#" className="hover:text-accent transition-colors">Twitter (X)</a></li>
-              <li><a href="#" className="hover:text-accent transition-colors">Vimeo</a></li>
-              <li><a href="#" className="hover:text-accent transition-colors">Behance</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="font-semibold text-lg mb-6 tracking-wider uppercase text-white/50">Studio</h3>
-            <ul className="space-y-4">
-              <li className="text-muted-foreground">123 Creative Block</li>
-              <li className="text-muted-foreground">Design District, NY 10001</li>
-              <li className="text-muted-foreground">+1 (555) 123-4567</li>
-            </ul>
-          </div>
-        </div>
+    <div 
+      className="relative h-[800px] sm:h-[600px] bg-black"
+      style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
+    >
+      <footer className="fixed bottom-0 w-full h-[800px] sm:h-[600px] bg-black text-white px-4 py-12 sm:px-6 sm:py-16 lg:px-8 border-t border-white/10 flex flex-col justify-between overflow-hidden">
         
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/40">
-          <p>&copy; {new Date().getFullYear()} ZENMOTION Studios. All rights reserved.</p>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+        {/* Dynamic Abstract Background Gradient */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(255,51,102,0.15)_0%,rgba(0,0,0,0)_60%)]" />
+
+        <div className="container mx-auto relative z-10 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 pt-12">
+          
+          <div className="space-y-6">
+            <h3 className="text-xl font-bold tracking-tight">ZENMOTION</h3>
+            <p className="max-w-xs text-muted-foreground font-medium">
+              A premium digital creative agency crafting award-winning video editing and motion design experiences.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <h4 className="text-sm font-bold tracking-widest uppercase text-white/50">Socials</h4>
+            <ul className="space-y-4">
+              {['Instagram', 'Twitter (X)', 'LinkedIn', 'Vimeo', 'Behance'].map((social) => (
+                <li key={social}>
+                  <a href="#" className="group inline-flex items-center gap-2 text-lg font-medium transition-colors hover:text-accent">
+                    {social}
+                    <span className="block h-[1px] w-0 bg-accent transition-all duration-300 group-hover:w-4" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="space-y-6">
+            <h4 className="text-sm font-bold tracking-widest uppercase text-white/50">Company</h4>
+            <ul className="space-y-4">
+              {['About', 'Work', 'Services', 'Careers', 'Contact'].map((item) => (
+                <li key={item}>
+                  <a href={`/${item.toLowerCase()}`} className="group inline-flex items-center gap-2 text-lg font-medium transition-colors hover:text-accent">
+                    {item}
+                    <span className="block h-[1px] w-0 bg-accent transition-all duration-300 group-hover:w-4" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          <div className="space-y-6">
+            <h4 className="text-sm font-bold tracking-widest uppercase text-white/50">Newsletter</h4>
+            <p className="text-muted-foreground font-medium">Subscribe for insights and inspiration.</p>
+            <form className="flex gap-2">
+              <input 
+                type="email" 
+                placeholder="Email address" 
+                className="w-full bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-accent rounded-sm"
+              />
+              <button 
+                type="submit" 
+                className="bg-white text-black px-6 py-3 font-semibold hover:bg-accent hover:text-white transition-colors rounded-sm"
+              >
+                Join
+              </button>
+            </form>
+          </div>
+          
+        </div>
+
+        <div className="container mx-auto relative z-10 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row mt-12 sm:mt-auto">
+          <p className="text-sm font-medium text-white/40">
+            © {new Date().getFullYear()} Zenmotion Studios. All rights reserved.
+          </p>
+          <div className="flex gap-6 text-sm font-medium text-white/40">
+            <a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="/terms" className="hover:text-white transition-colors">Terms of Service</a>
           </div>
         </div>
-      </div>
-      
-      {/* Huge background text */}
-      <div className="absolute bottom-[-10%] left-0 w-full overflow-hidden pointer-events-none select-none z-0 opacity-[0.03]">
-        <h1 className="text-[20vw] font-black tracking-tighter text-center leading-none whitespace-nowrap">
-          ZENMOTION
-        </h1>
-      </div>
-    </footer>
+
+        {/* Oversized typography effect */}
+        <div className="absolute -bottom-8 left-0 right-0 overflow-hidden pointer-events-none opacity-5 select-none flex justify-center">
+          <h1 className="text-[15vw] font-black tracking-tighter text-white whitespace-nowrap leading-none font-heading">
+            ZENMOTION
+          </h1>
+        </div>
+      </footer>
+    </div>
   );
 }

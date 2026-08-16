@@ -1,85 +1,115 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 const projects = [
   {
     id: 1,
-    title: "Neon Nights",
-    category: "Music Video",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+    title: "NEON DREAMS",
+    category: "Commercial / VFX",
+    video: "https://player.vimeo.com/external/494254884.sd.mp4?s=d00e57200ef9019623e19875bb2f07d2f92461be&profile_id=164&oauth2_token_id=57447761",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop",
   },
   {
     id: 2,
-    title: "Urban Flow",
-    category: "Commercial",
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2564&auto=format&fit=crop",
+    title: "ECHOES",
+    category: "Short Film / Color",
+    video: "https://player.vimeo.com/external/517090022.sd.mp4?s=d00e57200ef9019623e19875bb2f07d2f92461be&profile_id=164&oauth2_token_id=57447761",
+    image: "https://images.unsplash.com/photo-1518116348398-0c65538e14cb?q=80&w=2670&auto=format&fit=crop",
   },
   {
     id: 3,
-    title: "Echoes of Silence",
-    category: "Short Film",
-    image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=2564&auto=format&fit=crop",
+    title: "VELOCITY",
+    category: "Automotive / Edit",
+    video: "https://player.vimeo.com/external/434045526.sd.mp4?s=c27eecc69a27dbc4ff2b87d38afc35f1a9e7c02d&profile_id=164&oauth2_token_id=57447761",
+    image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2814&auto=format&fit=crop",
   },
   {
     id: 4,
-    title: "Future Now",
-    category: "Brand Anthem",
-    image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=2564&auto=format&fit=crop",
-  }
+    title: "SYNTHESIS",
+    category: "Music Video / 3D",
+    video: "https://player.vimeo.com/external/530206122.sd.mp4?s=a7f23c0356e63df8a011d8d85f5223a8b4ec8b9f&profile_id=164&oauth2_token_id=57447761",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+  },
 ];
 
 export function WorkGrid() {
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
+
   return (
-    <section className="bg-background py-24 sm:py-32">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-16 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
+    <section className="bg-black px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl"
-          >
-            SELECTED <br /> <span className="text-muted-foreground">WORKS</span>
-          </motion.h2>
-          <motion.a 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            href="/work"
-            className="group flex items-center gap-2 font-semibold text-accent"
+            transition={{ duration: 0.6 }}
+            className="text-4xl font-bold tracking-tight text-white sm:text-5xl"
           >
-            <span className="relative overflow-hidden">
-              <span className="inline-block transition-transform duration-300 group-hover:-translate-y-full">View all projects</span>
-              <span className="absolute left-0 top-0 inline-block translate-y-full transition-transform duration-300 group-hover:translate-y-0">View all projects</span>
-            </span>
+            SELECTED WORK
+          </motion.h2>
+          <motion.a 
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+            href="/work" 
+            className="group relative inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-white/70 transition-colors hover:text-white"
+          >
+            View All Projects
+            <span className="absolute -bottom-1 left-0 h-[1px] w-0 bg-white transition-all duration-300 group-hover:w-full" />
           </motion.a>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
           {projects.map((project, index) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.7, delay: index * 0.1 }}
-              className="group relative cursor-pointer"
+              transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className={`group relative flex cursor-pointer flex-col gap-4 ${
+                index % 2 !== 0 ? "md:mt-24" : ""
+              }`}
+              onMouseEnter={() => setHoveredId(project.id)}
+              onMouseLeave={() => setHoveredId(null)}
             >
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg bg-muted sm:aspect-video">
+              <div 
+                className="relative aspect-[4/5] w-full overflow-hidden bg-zinc-900 rounded-xl"
+                data-cursor="PLAY"
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={project.image} 
+                <img
+                  src={project.image}
                   alt={project.title}
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  className={`absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 ${
+                    hoveredId === project.id ? "opacity-0" : "opacity-100"
+                  }`}
                 />
-                <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <video
+                  src={project.video}
+                  muted
+                  loop
+                  playsInline
+                  autoPlay={hoveredId === project.id}
+                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+                    hoveredId === project.id ? "opacity-100" : "opacity-0"
+                  }`}
+                />
+                
+                <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               </div>
-              <div className="mt-6 flex items-center justify-between">
-                <h3 className="text-xl font-semibold tracking-tight">{project.title}</h3>
-                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{project.category}</p>
+
+              <div>
+                <h3 className="text-2xl font-bold uppercase tracking-tight text-white transition-colors group-hover:text-accent">
+                  {project.title}
+                </h3>
+                <p className="mt-1 text-sm font-medium uppercase tracking-widest text-white/50">
+                  {project.category}
+                </p>
               </div>
             </motion.div>
           ))}
