@@ -17,7 +17,7 @@ export function About() {
   const y3 = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
 
   return (
-    <section ref={containerRef} className="bg-background py-24 sm:py-32 lg:py-40 relative overflow-hidden">
+    <section id="about" ref={containerRef} className="bg-background py-24 sm:py-32 lg:py-40 relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           
