@@ -1,105 +1,109 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { motion, useMotionValue, useAnimation, PanInfo } from "framer-motion";
 
 const testimonials = [
   {
-    quote: "Zenmotion elevated our brand campaign to entirely new heights. Their attention to rhythm and visual storytelling is unmatched in the industry.",
-    author: "Sarah Jenkins",
-    role: "CMO, Global Tech",
+    quote: "Zenmotion didn't just edit our video, they completely elevated our brand's narrative. Their attention to rhythm and emotion is unmatched.",
+    name: "Sarah Jenkins",
+    title: "Creative Director, Vibe Global",
   },
   {
-    quote: "Working with this studio was a revelation. They didn't just execute our vision—they transformed it into something cinematic and unforgettable.",
-    author: "Marcus Thorne",
-    role: "Director, Thorne Films",
+    quote: "The motion design work they delivered for our launch campaign was breathtaking. They have an innate understanding of visual pacing.",
+    name: "Marcus Cole",
+    title: "CMO, Nexus Tech",
   },
   {
-    quote: "The team's ability to blend striking 3D motion design with raw, emotional narrative editing sets them apart from any other agency we've hired.",
-    author: "Elena Rostova",
-    role: "Creative Director, VANGUARD",
+    quote: "Working with Zenmotion was a masterclass in collaboration. They took our raw footage and turned it into a cinematic masterpiece.",
+    name: "Elena Rodriguez",
+    title: "Independent Filmmaker",
+  },
+  {
+    quote: "A rare mix of technical brilliance and artistic intuition. They are our go-to studio for anything that requires a premium touch.",
+    name: "David Chen",
+    title: "Head of Content, Aura",
   }
 ];
 
 export function Testimonials() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const [width, setWidth] = useState(0);
+  const carousel = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const controls = useAnimation();
 
-  const next = () => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-  };
+  useEffect(() => {
+    if (carousel.current) {
+      setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
+    }
+    
+    // Auto scroll setup could go here if desired
+  }, []);
 
-  const prev = () => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0
-    })
+  const handleDragEnd = (e: any, info: PanInfo) => {
+    // Add some snap or bounce logic if needed
   };
 
   return (
-    <section className="bg-zinc-950 text-white py-32 overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-between gap-8 mb-16 sm:flex-row">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">CLIENT VOICES</h2>
-          <div className="flex gap-4">
-            <button 
-              onClick={prev}
-              className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-white hover:text-black"
-              aria-label="Previous testimonial"
-            >
-              <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-1" />
-            </button>
-            <button 
-              onClick={next}
-              className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-white hover:text-black"
-              aria-label="Next testimonial"
-            >
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </button>
-          </div>
-        </div>
+    <section className="bg-background py-24 sm:py-32 overflow-hidden border-t border-white/10" data-cursor="DRAG">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <motion.h2 
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="text-4xl font-bold tracking-tight text-white sm:text-5xl font-heading"
+        >
+          CLIENT VOICES
+        </motion.h2>
+      </div>
 
-        <div className="relative h-[400px] sm:h-[300px] w-full max-w-5xl mx-auto">
-          <AnimatePresence initial={false} custom={direction}>
-            <motion.div
-              key={currentIndex}
-              custom={direction}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 }
-              }}
-              className="absolute inset-0 flex flex-col justify-center"
-            >
-              <p className="text-2xl sm:text-4xl md:text-5xl font-medium leading-tight tracking-tight mb-8">
-                "{testimonials[currentIndex].quote}"
-              </p>
-              <div>
-                <p className="text-xl font-bold">{testimonials[currentIndex].author}</p>
-                <p className="text-muted-foreground">{testimonials[currentIndex].role}</p>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+      <div className="pl-4 sm:pl-6 lg:pl-8">
+        <motion.div 
+          ref={carousel} 
+          className="cursor-grab active:cursor-grabbing overflow-hidden"
+          whileTap={{ cursor: "grabbing" }}
+        >
+          <motion.div 
+            drag="x"
+            dragConstraints={{ right: 0, left: -width }}
+            dragElastic={0.1}
+            onDragEnd={handleDragEnd}
+            style={{ x }}
+            className="flex gap-8 sm:gap-12 w-max"
+          >
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="w-[85vw] sm:w-[600px] md:w-[700px] shrink-0 border border-white/10 bg-white/5 p-8 sm:p-12 transition-colors hover:bg-white/10"
+              >
+                <div className="text-accent text-6xl font-heading leading-none h-12">"</div>
+                <p className="text-xl sm:text-2xl md:text-3xl font-medium tracking-tight text-white mb-12 min-h-[120px]">
+                  {testimonial.quote}
+                </p>
+                
+                <div className="flex items-center gap-4">
+                  <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold font-heading">
+                    {testimonial.name.charAt(0)}
+                  </div>
+                  <div>
+                    <div className="font-bold text-white uppercase tracking-wider">{testimonial.name}</div>
+                    <div className="text-sm font-medium text-white/50 uppercase tracking-widest mt-1">{testimonial.title}</div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+      
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-12 flex justify-end">
+        <div className="flex gap-4 items-center text-white/50 text-sm font-bold tracking-widest uppercase">
+          <span>&larr; Drag to explore &rarr;</span>
         </div>
       </div>
     </section>
