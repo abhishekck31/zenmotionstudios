@@ -1,90 +1,84 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { MagneticButton } from "./MagneticButton";
+import { useRef } from "react";
 
 export function Contact() {
-  const [hovered, setHovered] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const x = (e.clientX - left - width / 2) / 25;
+    const y = (e.clientY - top - height / 2) / 25;
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  const springConfig = { damping: 15, stiffness: 150 };
+  const x = useSpring(mouseX, springConfig);
+  const y = useSpring(mouseY, springConfig);
 
   return (
-    <section className="bg-accent text-white py-32 sm:py-48 relative overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-16">
-          <div className="w-full lg:w-1/2">
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
-              className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-[0.9] mb-8"
-            >
-              LET'S CRAFT<br />SOMETHING<br />EXTRAORDINARY.
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl max-w-md font-medium text-white/90"
-            >
-              Ready to elevate your brand's narrative through cutting-edge motion and visual storytelling?
-            </motion.p>
-          </div>
+    <section 
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="bg-accent py-24 sm:py-32 lg:py-48 text-black relative overflow-hidden"
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center justify-center text-center">
+        
+        <motion.div
+          style={{ x, y }}
+          className="mb-12"
+        >
+          <h2 className="text-[12vw] sm:text-[10vw] leading-[0.9] font-black tracking-tighter uppercase font-heading">
+            Let&apos;s Create <br />
+            <span className="text-white drop-shadow-lg">Together.</span>
+          </h2>
+        </motion.div>
 
-          <div className="w-full lg:w-1/3">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-col gap-12"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center"
+        >
+          <MagneticButton>
+            <a 
+              href="mailto:hello@zenmotion.studio" 
+              className="group relative flex h-24 w-24 sm:h-32 sm:w-32 items-center justify-center rounded-full bg-black text-white transition-transform hover:scale-110 active:scale-95 shadow-xl"
             >
-              <div>
-                <h3 className="text-sm font-bold tracking-widest uppercase mb-4 text-black">Inquiries</h3>
-                <a 
-                  href="mailto:hello@zenmotion.studio" 
-                  className="text-2xl sm:text-3xl font-medium hover:text-black transition-colors"
-                >
-                  hello@zenmotion.studio
-                </a>
-              </div>
-              
-              <div>
-                <h3 className="text-sm font-bold tracking-widest uppercase mb-4 text-black">Location</h3>
-                <p className="text-2xl sm:text-3xl font-medium">
-                  Los Angeles, CA<br />
-                  <span className="text-lg text-white/80">Available Worldwide</span>
-                </p>
-              </div>
-              
-              <div
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-                className="mt-8"
-              >
-                <a href="/contact" className="inline-flex items-center gap-4 text-2xl font-bold uppercase tracking-wider relative">
-                  START A PROJECT
-                  <motion.div
-                    animate={{
-                      x: hovered ? 10 : 0,
-                      y: hovered ? -10 : 0
-                    }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="bg-black text-white p-3 rounded-full"
-                  >
-                    <ArrowUpRight className="h-6 w-6" />
-                  </motion.div>
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        </div>
+              <span className="sr-only">Contact Us</span>
+              <ArrowUpRight className="h-8 w-8 sm:h-12 sm:w-12 transition-transform duration-300 group-hover:rotate-45 group-hover:scale-110" />
+            </a>
+          </MagneticButton>
+          
+          <p className="mt-8 text-xl font-bold tracking-widest uppercase">
+            hello@zenmotion.studio
+          </p>
+        </motion.div>
       </div>
-      
-      {/* Decorative large text */}
-      <div className="absolute -bottom-20 -right-10 pointer-events-none select-none opacity-[0.03]">
-        <h2 className="text-[20rem] font-black leading-none">ZM.</h2>
+
+      <div className="absolute top-0 right-0 p-8 hidden md:block opacity-20 pointer-events-none">
+        <svg width="200" height="200" viewBox="0 0 100 100" className="animate-spin-slow">
+          <path id="curve" d="M 50 50 m -40 0 a 40 40 0 1 1 80 0 a 40 40 0 1 1 -80 0" fill="transparent" />
+          <text className="text-[12px] font-bold uppercase tracking-widest">
+            <textPath href="#curve">
+              Available for work • Available for work • 
+            </textPath>
+          </text>
+        </svg>
       </div>
     </section>
   );
