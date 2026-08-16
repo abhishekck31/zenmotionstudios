@@ -6,6 +6,7 @@ import { CustomCursor } from "@/components/CustomCursor";
 import { Footer } from "@/components/Footer";
 import { Preloader } from "@/components/Preloader";
 import { NoiseOverlay } from "@/components/NoiseOverlay";
+import { SmoothScroll } from "@/components/SmoothScroll";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
       className={`${inter.variable} ${syne.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col cursor-none font-sans bg-background text-foreground">
+        <SmoothScroll />
         <NoiseOverlay />
         <Preloader />
         <CustomCursor />
