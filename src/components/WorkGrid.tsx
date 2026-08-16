@@ -2,28 +2,33 @@
 
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Link from "next/link";
 
 const projects = [
   {
     title: "NEON DREAMS",
+    slug: "neon-dreams",
     client: "Cyber Corp",
     category: "Commercial / VFX",
     video: "https://cdn.coverr.co/videos/coverr-cyberpunk-city-at-night-5244/1080p.mp4",
   },
   {
     title: "ECHOES OF SILENCE",
+    slug: "echoes-of-silence",
     client: "Soundscape",
     category: "Music Video",
     video: "https://cdn.coverr.co/videos/coverr-dj-playing-music-at-a-party-5240/1080p.mp4",
   },
   {
     title: "THE ASCENT",
+    slug: "neon-dreams", // reusing slug for demo
     client: "Alpine Gear",
     category: "Documentary",
     video: "https://cdn.coverr.co/videos/coverr-snowy-mountain-peaks-in-the-clouds-5226/1080p.mp4",
   },
   {
     title: "LIQUID GOLD",
+    slug: "echoes-of-silence", // reusing slug for demo
     client: "Aura Fragrances",
     category: "Product / Motion",
     video: "https://cdn.coverr.co/videos/coverr-pouring-honey-5214/1080p.mp4",
@@ -63,9 +68,11 @@ export function WorkGrid() {
             <div 
               key={index} 
               className="relative h-full w-[85vw] sm:w-[70vw] lg:w-[50vw] xl:w-[90vw] shrink-0 pr-4 sm:pr-8"
-              data-cursor="PLAY"
+              data-cursor="EXPLORE"
             >
-              <ProjectCard project={project} index={index} />
+              <Link href={`/work/${project.slug}`} className="block h-full w-full">
+                <ProjectCard project={project} index={index} />
+              </Link>
             </div>
           ))}
         </motion.div>
