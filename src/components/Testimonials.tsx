@@ -40,7 +40,7 @@ export function Testimonials() {
     // Auto scroll setup could go here if desired
   }, []);
 
-  const handleDragEnd = (e: any, info: PanInfo) => {
+  const handleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, _info: PanInfo) => {
     // Add some snap or bounce logic if needed
   };
 

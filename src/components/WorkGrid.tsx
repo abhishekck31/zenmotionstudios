@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import { duration, easing } from "@/lib/motion";
 
 const projects = [
   {
@@ -53,26 +54,38 @@ export function WorkGrid() {
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
         
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8">
-          <div className="flex items-end justify-between">
-            <h2 className="text-5xl font-black tracking-tighter text-white sm:text-7xl lg:text-8xl font-heading">
+          <div className="flex items-end justify-between overflow-hidden">
+            <motion.h2 
+              initial={{ y: "100%", opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: duration.section, ease: easing.entrance }}
+              className="text-5xl font-black tracking-tighter text-white sm:text-7xl lg:text-8xl font-heading"
+            >
               FEATURED <br />
               <span className="text-accent">WORK.</span>
-            </h2>
-            <p className="hidden md:block max-w-sm text-right text-lg text-white/50 font-medium">
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: duration.section, delay: duration.micro }}
+              className="hidden md:block max-w-sm text-right text-lg text-white/50 font-medium"
+            >
               A curated selection of our finest visual narratives and motion design projects.
-            </p>
+            </motion.p>
           </div>
         </div>
 
-        <motion.div style={{ x }} className="flex h-[60vh] w-[400vw] sm:w-[300vw] lg:w-[200vw] xl:w-[400vw] pl-4 sm:pl-8 lg:pl-12">
+        <motion.div style={{ x }} className="flex h-[60vh] w-[400vw] sm:w-[300vw] lg:w-[200vw] xl:w-[400vw] pl-4 sm:pl-8 lg:pl-12 pt-8">
           {projects.map((project, index) => (
             <div 
               key={index} 
               className="relative h-full w-[85vw] sm:w-[70vw] lg:w-[50vw] xl:w-[90vw] shrink-0 pr-4 sm:pr-8"
-              data-cursor="EXPLORE"
+              data-cursor="PLAY"
             >
-              <Link href={`/work/${project.slug}`} className="block h-full w-full">
-                <ProjectCard project={project} index={index} />
+              <Link href={`/work/${project.slug}`} className="block h-full w-full outline-none">
+                <ProjectCard project={project} />
               </Link>
             </div>
           ))}
@@ -82,40 +95,61 @@ export function WorkGrid() {
   );
 }
 
-function ProjectCard({ project, index }: { project: any; index: number }) {
+interface Project {
+  title: string;
+  slug: string;
+  client: string;
+  category: string;
+  video: string;
+}
+
+function ProjectCard({ project }: { project: Project }) {
   const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   return (
     <div 
-      className="group relative h-full w-full overflow-hidden rounded-2xl bg-white/5"
+      className="group relative h-full w-full overflow-hidden rounded-2xl bg-white/5 cursor-pointer"
       onMouseEnter={() => {
         setIsHovered(true);
-        videoRef.current?.play();
+        if (videoRef.current) {
+          videoRef.current.currentTime = 0;
+          videoRef.current.play().catch(() => {});
+        }
       }}
       onMouseLeave={() => {
         setIsHovered(false);
         videoRef.current?.pause();
       }}
     >
-      <video
+      <motion.video
         ref={videoRef}
         muted
         loop
         playsInline
-        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+        animate={{ scale: isHovered ? 1.05 : 1 }}
+        transition={{ duration: duration.section, ease: easing.entrance }}
+        className="absolute inset-0 h-full w-full object-cover"
       >
         <source src={project.video} type="video/mp4" />
-      </video>
+      </motion.video>
       
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
+      <motion.div 
+        animate={{ opacity: isHovered ? 1 : 0.7 }}
+        transition={{ duration: duration.component }}
+        className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" 
+      />
       
-      <div className="absolute bottom-0 left-0 w-full p-8 sm:p-12 transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
+      <motion.div 
+        animate={{ y: isHovered ? 0 : 20 }}
+        transition={{ duration: duration.component, ease: easing.expressive }}
+        className="absolute bottom-0 left-0 w-full p-8 sm:p-12"
+      >
         <div className="flex items-center gap-4 mb-4 overflow-hidden">
           <motion.div 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: isHovered ? 0 : 20, opacity: isHovered ? 1 : 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: duration.ui, ease: easing.exit }}
             className="flex items-center gap-2"
           >
             <span className="text-xs font-bold uppercase tracking-widest text-accent">{project.category}</span>
@@ -127,7 +161,7 @@ function ProjectCard({ project, index }: { project: any; index: number }) {
         <h3 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-white uppercase font-heading drop-shadow-lg">
           {project.title}
         </h3>
-      </div>
+      </motion.div>
     </div>
   );
 }

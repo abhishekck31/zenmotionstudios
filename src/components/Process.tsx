@@ -76,7 +76,14 @@ export function Process() {
   );
 }
 
-function ProcessItem({ phase, index }: { phase: any; index: number }) {
+interface Phase {
+  number: string;
+  title: string;
+  description: string;
+  tags: string[];
+}
+
+function ProcessItem({ phase }: { phase: Phase }) {
   const itemRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: itemRef,
