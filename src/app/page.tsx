@@ -7,6 +7,7 @@ import { Services } from "@/components/Services";
 import { Process } from "@/components/Process";
 import { WorkGrid } from "@/components/WorkGrid";
 import { Studio } from "@/components/Studio";
+import { Stats } from "@/components/Stats";
 import { ClientsMarquee } from "@/components/ClientsMarquee";
 import { Testimonials } from "@/components/Testimonials";
 import { JournalTeaser } from "@/components/JournalTeaser";
@@ -25,6 +26,7 @@ export default function Home() {
         <Process />
         <WorkGrid />
         <Studio />
+        <Stats />
         <ClientsMarquee />
         <Testimonials />
         <Marquee />
