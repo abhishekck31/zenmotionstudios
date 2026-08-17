@@ -23,9 +23,19 @@ export function Footer() {
     >
       <motion.div 
         style={{ y, scale, opacity }}
-        className="fixed bottom-0 h-[80vh] min-h-[600px] w-full flex flex-col justify-between pt-24 pb-8 px-4 sm:px-6 lg:px-8"
+        className="fixed bottom-0 h-[80vh] min-h-[600px] w-full flex flex-col justify-between pt-16 pb-8 px-4 sm:px-6 lg:px-8"
       >
-        <div className="container mx-auto flex flex-col md:flex-row justify-between gap-12">
+        <div className="container mx-auto flex flex-col items-center text-center mb-16">
+          <h2 className="text-4xl sm:text-7xl lg:text-8xl font-black tracking-tighter uppercase text-white font-heading leading-[0.85]">
+            LET'S MAKE <br />
+            <span className="text-accent">SOMETHING MOVING.</span>
+          </h2>
+          <a href="mailto:hello@zenmotion.studio" className="mt-8 px-8 py-4 bg-white text-black font-bold uppercase tracking-widest text-sm hover:bg-accent hover:text-white transition-colors">
+            Start a project
+          </a>
+        </div>
+
+        <div className="container mx-auto flex flex-col md:flex-row justify-between gap-12 border-t border-white/10 pt-12">
           <div className="flex flex-col gap-4">
             <h3 className="text-xl font-bold uppercase tracking-widest text-white mb-4">Locations</h3>
             <p className="text-white/70 font-medium">
