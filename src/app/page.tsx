@@ -5,8 +5,9 @@ import { Hero } from "@/components/Hero";
 import { About } from "@/components/About";
 import { Services } from "@/components/Services";
 import { Process } from "@/components/Process";
-import { ClientsMarquee } from "@/components/ClientsMarquee";
 import { WorkGrid } from "@/components/WorkGrid";
+import { Studio } from "@/components/Studio";
+import { ClientsMarquee } from "@/components/ClientsMarquee";
 import { Testimonials } from "@/components/Testimonials";
 import { JournalTeaser } from "@/components/JournalTeaser";
 import { ShowreelModal } from "@/components/ShowreelModal";
@@ -23,6 +24,7 @@ export default function Home() {
         <Services />
         <Process />
         <WorkGrid />
+        <Studio />
         <ClientsMarquee />
         <Testimonials />
         <Marquee />
