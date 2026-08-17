@@ -8,31 +8,34 @@ export function Preloader() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Disable scrolling while loading
-    document.body.style.overflow = "hidden";
+    // Disable scrolling while loading by adding a class
+    document.documentElement.classList.add("overflow-hidden");
 
-    const duration = 2000;
+    const totalDuration = 2000;
     const interval = 20;
-    const steps = duration / interval;
+    const steps = totalDuration / interval;
     let currentStep = 0;
 
     const timer = setInterval(() => {
       currentStep++;
-      const newProgress = Math.min(Math.round((currentStep / steps) * 100), 100);
+      const newProgress = Math.min(
+        Math.round((currentStep / steps) * 100),
+        100,
+      );
       setProgress(newProgress);
 
       if (currentStep >= steps) {
         clearInterval(timer);
         setTimeout(() => {
           setIsLoading(false);
-          document.body.style.overflow = "auto";
-        }, 500); // slight delay after reaching 100%
+          document.documentElement.classList.remove("overflow-hidden");
+        }, 500);
       }
     }, interval);
 
     return () => {
       clearInterval(timer);
-      document.body.style.overflow = "auto";
+      document.documentElement.classList.remove("overflow-hidden");
     };
   }, []);
 
@@ -49,7 +52,7 @@ export function Preloader() {
 
           <div className="relative z-10 flex flex-col items-center gap-4">
             <div className="overflow-hidden">
-              <motion.h1 
+              <motion.h1
                 initial={{ y: 100 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -58,14 +61,18 @@ export function Preloader() {
                 ZEN<span className="text-accent">MOTION</span>
               </motion.h1>
             </div>
-            
+
             <div className="flex w-full items-center justify-between mt-8 max-w-[200px] sm:max-w-[300px]">
-              <span className="text-xs font-bold uppercase tracking-widest text-white/50">Loading</span>
-              <span className="text-sm font-bold tracking-widest text-accent font-heading">{progress}%</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-white/50">
+                Loading
+              </span>
+              <span className="text-sm font-bold tracking-widest text-accent font-heading">
+                {progress}%
+              </span>
             </div>
-            
+
             <div className="h-[2px] w-full max-w-[200px] sm:max-w-[300px] bg-white/10 overflow-hidden relative">
-              <motion.div 
+              <motion.div
                 className="absolute top-0 left-0 bottom-0 bg-accent"
                 initial={{ width: "0%" }}
                 animate={{ width: `${progress}%` }}

@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { duration, easing } from "@/lib/motion";
+import { GradientBackground } from "@/components/ui/noisy-gradient-backgrounds";
 
 const phases = [
   {
@@ -38,8 +39,20 @@ export function Process() {
     <section 
       id="process" 
       ref={containerRef}
-      className="bg-background relative border-t border-white/5"
+      className="relative border-t border-white/5 overflow-hidden"
     >
+      <GradientBackground
+        gradientOrigin="left-middle"
+        colors={[
+          { color: "rgba(8,8,12,1)", stop: "0%" },
+          { color: "rgba(12,10,18,1)", stop: "50%" },
+          { color: "rgba(8,8,12,1)", stop: "100%" },
+        ]}
+        noiseIntensity={0.4}
+        noisePatternSize={100}
+        noisePatternRefreshInterval={4}
+        className="-z-10"
+      />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row relative">
           
@@ -66,7 +79,7 @@ export function Process() {
           {/* Scrolling Right Column */}
           <div className="lg:w-7/12 py-12 lg:py-40 flex flex-col gap-32 lg:gap-64">
             {phases.map((phase, index) => (
-              <ProcessItem key={index} phase={phase} index={index} />
+              <ProcessItem key={index} phase={phase} />
             ))}
           </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
@@ -10,10 +10,10 @@ interface ShowreelModalProps {
 }
 
 export function ShowreelModal({ isOpen, onClose }: ShowreelModalProps) {
-  const [mounted, setMounted] = useState(false);
+  const isMountedRef = useRef(false);
 
   useEffect(() => {
-    setMounted(true);
+    isMountedRef.current = true;
   }, []);
 
   useEffect(() => {
@@ -27,7 +27,6 @@ export function ShowreelModal({ isOpen, onClose }: ShowreelModalProps) {
     };
   }, [isOpen]);
 
-  // Handle escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -35,8 +34,6 @@ export function ShowreelModal({ isOpen, onClose }: ShowreelModalProps) {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
-
-  if (!mounted) return null;
 
   return (
     <AnimatePresence>
@@ -61,22 +58,26 @@ export function ShowreelModal({ isOpen, onClose }: ShowreelModalProps) {
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 200, delay: 0.1 }}
+            transition={{
+              type: "spring",
+              damping: 25,
+              stiffness: 200,
+              delay: 0.1,
+            }}
             className="relative w-full max-w-6xl aspect-video mx-4 sm:mx-8 bg-zinc-900 rounded-xl overflow-hidden shadow-2xl border border-white/10"
-            onClick={(e) => e.stopPropagation()} // Prevent clicks inside modal from closing it
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="absolute inset-0 flex items-center justify-center text-white/30 text-sm font-medium tracking-widest animate-pulse">
               LOADING SHOWREEL
             </div>
-            
-            {/* The actual iframe for the video */}
-            <iframe 
-              src="https://player.vimeo.com/video/372332616?h=df1239c4d9&autoplay=1&loop=1&title=0&byline=0&portrait=0" 
-              className="absolute inset-0 w-full h-full z-10" 
-              frameBorder="0" 
-              allow="autoplay; fullscreen; picture-in-picture" 
+
+            <iframe
+              src="https://player.vimeo.com/video/372332616?h=df1239c4d9&autoplay=1&loop=1&title=0&byline=0&portrait=0"
+              className="absolute inset-0 w-full h-full z-10"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
-            ></iframe>
+            />
           </motion.div>
         </motion.div>
       )}

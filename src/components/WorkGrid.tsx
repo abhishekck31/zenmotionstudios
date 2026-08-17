@@ -77,11 +77,11 @@ export function WorkGrid() {
           </div>
         </div>
 
-        <motion.div style={{ x }} className="flex h-[60vh] w-[400vw] sm:w-[300vw] lg:w-[200vw] xl:w-[400vw] pl-4 sm:pl-8 lg:pl-12 pt-8">
+        <motion.div style={{ x }} className="flex h-[60vh] gap-6 sm:gap-8 pl-4 sm:pl-8 lg:pl-12 pt-8">
           {projects.map((project, index) => (
             <div 
               key={index} 
-              className="relative h-full w-[85vw] sm:w-[70vw] lg:w-[50vw] xl:w-[90vw] shrink-0 pr-4 sm:pr-8"
+              className="relative h-full w-[80vw] sm:w-[60vw] lg:w-[45vw] shrink-0"
               data-cursor="PLAY"
             >
               <Link href={`/work/${project.slug}`} className="block h-full w-full outline-none">

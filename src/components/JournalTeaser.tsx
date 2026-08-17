@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { duration, easing, stagger, variants } from "@/lib/motion";
+import { duration, easing, variants } from "@/lib/motion";
 import { MagneticButton } from "./MagneticButton";
 import { ArrowRight } from "lucide-react";
 

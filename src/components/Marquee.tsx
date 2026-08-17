@@ -81,7 +81,7 @@ export function Marquee() {
           ))}
         </ParallaxText>
         <ParallaxText baseVelocity={3}>
-          {items.reverse().map((item, idx) => (
+          {[...items].reverse().map((item, idx) => (
             <span key={idx} className="mr-8 text-transparent" style={{ WebkitTextStroke: "2px rgba(255,255,255,0.5)" }}>
               {item} <span className="text-accent ml-8" style={{ WebkitTextStroke: "0px" }}>•</span>
             </span>

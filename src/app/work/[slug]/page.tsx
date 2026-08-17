@@ -36,14 +36,16 @@ const projects = {
   },
 };
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const project = projects[params.slug as keyof typeof projects];
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const project = projects[slug as keyof typeof projects];
   if (!project) return { title: "Not Found" };
   return { title: `${project.title} — Zenmotion` };
 }
 
-export default function ProjectPage({ params }: { params: { slug: string } }) {
-  const project = projects[params.slug as keyof typeof projects];
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const project = projects[slug as keyof typeof projects];
   
   if (!project) {
     notFound();

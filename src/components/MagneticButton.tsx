@@ -12,7 +12,7 @@ export function MagneticButton({
   className?: string,
   onClick?: () => void
 }) {
-  const ref = useRef<HTMLButtonElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -23,7 +23,7 @@ export function MagneticButton({
   const childX = useTransform(springX, (value) => value * 0.4);
   const childY = useTransform(springY, (value) => value * 0.4);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
     const { clientX, clientY } = e;
     const { left, top, width, height } = ref.current.getBoundingClientRect();
@@ -41,7 +41,7 @@ export function MagneticButton({
   };
 
   return (
-    <motion.button
+    <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -50,17 +50,17 @@ export function MagneticButton({
         x: springX,
         y: springY,
       }}
-      className={className}
+      className={`inline-block ${className}`}
     >
       <motion.div
         style={{
           x: childX,
           y: childY,
         }}
-        className="flex h-full w-full items-center justify-center pointer-events-none"
+        className="flex h-full w-full items-center justify-center"
       >
         {children}
       </motion.div>
-    </motion.button>
+    </motion.div>
   );
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion, useInView, useAnimation } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { duration, easing, stagger, variants } from "@/lib/motion";
 
 const stats = [
   { label: "AWARDS WON", value: 42, suffix: "+" },
@@ -9,7 +10,7 @@ const stats = [
   { label: "GLOBAL CLIENTS", value: 85, suffix: "+" },
 ];
 
-function AnimatedCounter({ value, duration = 2 }: { value: number; duration?: number }) {
+function AnimatedCounter({ value, durationInSeconds = duration.cinematic }: { value: number; durationInSeconds?: number }) {
   const [count, setCount] = useState(0);
   const nodeRef = useRef<HTMLSpanElement>(null);
   const inView = useInView(nodeRef, { once: true, margin: "-100px" });
@@ -18,7 +19,7 @@ function AnimatedCounter({ value, duration = 2 }: { value: number; duration?: nu
     if (inView) {
       let start = 0;
       const end = value;
-      const incrementTime = (duration * 1000) / end;
+      const incrementTime = (durationInSeconds * 1000) / end;
 
       const timer = setInterval(() => {
         start += 1;
@@ -28,7 +29,7 @@ function AnimatedCounter({ value, duration = 2 }: { value: number; duration?: nu
 
       return () => clearInterval(timer);
     }
-  }, [value, duration, inView]);
+  }, [value, durationInSeconds, inView]);
 
   return <span ref={nodeRef}>{count}</span>;
 }
@@ -52,22 +53,24 @@ export function Stats() {
       </div>
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24">
-          {stats.map((stat, index) => (
+        <motion.div 
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ staggerChildren: stagger.slow }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24"
+        >
+          {stats.map((stat) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              variants={variants.fadeScale}
+              transition={{ duration: duration.section, ease: easing.entrance }}
               className="flex flex-col items-center justify-center text-center"
             >
               <div className="relative overflow-hidden mb-4">
                 <motion.div
-                  initial={{ y: "100%" }}
-                  whileInView={{ y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, delay: index * 0.2 + 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  variants={variants.lineMask}
+                  transition={{ duration: duration.section, ease: easing.expressive }}
                   className="text-[12vw] sm:text-[8vw] md:text-[6vw] font-black leading-none tracking-tighter text-white font-heading mix-blend-difference"
                 >
                   <AnimatedCounter value={stat.value} />
@@ -79,7 +82,7 @@ export function Stats() {
               </h3>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
