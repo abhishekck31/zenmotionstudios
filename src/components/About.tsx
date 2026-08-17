@@ -4,6 +4,8 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { MagneticButton } from "./MagneticButton";
 import { ArrowRight } from "lucide-react";
+import { duration, easing, stagger, variants } from "@/lib/motion";
+import { GradientBackground } from "@/components/ui/noisy-gradient-backgrounds";
 
 export function About() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -17,33 +19,61 @@ export function About() {
   const y3 = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
 
   return (
-    <section id="about" ref={containerRef} className="bg-background py-24 sm:py-32 lg:py-40 relative overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" ref={containerRef} className="py-24 sm:py-32 lg:py-40 relative overflow-hidden">
+      <GradientBackground
+        gradientOrigin="top-middle"
+        colors={[
+          { color: "rgba(10,10,12,1)", stop: "0%" },
+          { color: "rgba(30,25,20,1)", stop: "50%" },
+          { color: "rgba(45,35,30,1)", stop: "100%" }
+        ]}
+        noiseIntensity={0.6}
+        noisePatternSize={100}
+        className="-z-10"
+      />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           
           <div className="relative z-10 flex flex-col justify-center max-w-2xl">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial="initial"
+              whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ staggerChildren: stagger.base, delayChildren: duration.micro }}
             >
-              <h2 className="text-sm font-bold uppercase tracking-widest text-accent mb-6 font-heading">
-                ABOUT THE STUDIO
-              </h2>
-              <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tighter text-foreground mb-8 leading-[1.1] font-heading">
-                WE DO NOT JUST EDIT VIDEO. <br />
-                <span className="text-muted-foreground">WE ENGINEER EMOTION.</span>
-              </p>
+              <div className="overflow-hidden mb-6">
+                <motion.h2 
+                  variants={variants.lineMask}
+                  transition={{ duration: duration.section, ease: easing.entrance }}
+                  className="text-sm font-bold uppercase tracking-widest text-accent font-heading"
+                >
+                  ABOUT THE STUDIO
+                </motion.h2>
+              </div>
               
-              <div className="space-y-6 text-lg md:text-xl text-muted-foreground font-medium mb-12">
+              <div className="overflow-hidden mb-8">
+                <motion.p 
+                  variants={variants.lineMask}
+                  transition={{ duration: duration.section, ease: easing.entrance }}
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tighter text-foreground leading-[1.1] font-heading"
+                >
+                  WE DO NOT JUST EDIT VIDEO. <br />
+                  <span className="text-muted-foreground">WE ENGINEER EMOTION.</span>
+                </motion.p>
+              </div>
+              
+              <motion.div 
+                variants={variants.fadeScale}
+                transition={{ duration: duration.section, ease: easing.entrance }}
+                className="space-y-6 text-lg md:text-xl text-muted-foreground font-medium mb-12"
+              >
                 <p>
                   Founded by a collective of award-winning directors, editors, and motion designers, ZENMOTION is a creative agency built on the belief that visual storytelling should leave a lasting mark.
                 </p>
                 <p>
                   We operate at the intersection of cinematic artistry and modern digital culture, crafting pieces that are as intellectually rigorous as they are visually stunning.
                 </p>
-              </div>
+              </motion.div>
 
               <MagneticButton 
                 className="group inline-flex items-center gap-4 border-b-2 border-foreground pb-2 text-lg font-bold tracking-widest uppercase transition-colors hover:border-accent hover:text-accent"
