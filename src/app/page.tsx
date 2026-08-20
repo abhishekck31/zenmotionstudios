@@ -11,6 +11,7 @@ import { ClientsMarquee } from "@/components/ClientsMarquee";
 import { Testimonials } from "@/components/Testimonials";
 import { JournalTeaser } from "@/components/JournalTeaser";
 import { Marquee } from "@/components/Marquee";
+import { FAQ } from "@/components/FAQ";
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
         <Stats />
         <ClientsMarquee />
         <Testimonials />
+        <FAQ />
         <Marquee />
         <JournalTeaser />
       </main>

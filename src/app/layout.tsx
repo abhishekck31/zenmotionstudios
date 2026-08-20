@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { Preloader } from "@/components/Preloader";
 import { NoiseOverlay } from "@/components/NoiseOverlay";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { BackToTop } from "@/components/BackToTop";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -80,6 +81,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <BackToTop />
       </body>
     </html>
   );
